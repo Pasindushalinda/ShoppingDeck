@@ -1,3 +1,5 @@
+using API.Helper;
+using AutoMapper;
 using Core.Interface;
 using Infrastructure.Data;
 using Microsoft.AspNetCore.Builder;
@@ -21,6 +23,8 @@ namespace API
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddScoped<IProductRepository,ProductRepository>();
+            services.AddScoped(typeof(IGenericRepository<>),typeof(GenricRepository<>));
+            services.AddAutoMapper(typeof(MappingProfile));
             services.AddControllers();
             services.AddDbContext<StoreContext>(x=>x.UseSqlite(_configuration.GetConnectionString("DefaultConnection")));
         }
@@ -36,6 +40,7 @@ namespace API
             app.UseHttpsRedirection();
 
             app.UseRouting();
+            app.UseStaticFiles();
 
             app.UseAuthorization();
 
