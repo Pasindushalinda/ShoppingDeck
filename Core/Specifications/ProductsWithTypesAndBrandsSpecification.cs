@@ -7,7 +7,10 @@ namespace Core.Specifications
     public class ProductsWithTypesAndBrandsSpecification : BaseSpecification<Product>
     {
         public ProductsWithTypesAndBrandsSpecification(ProductSpecParams productSpecParams)
-            :base(x=>(!productSpecParams.BrandId.HasValue||x.ProductBrandId==productSpecParams.BrandId)
+            :base(x=>
+            (string.IsNullOrEmpty(productSpecParams.Search) || x.Name.ToLower().Contains
+            (productSpecParams.Search)) &&
+            (!productSpecParams.BrandId.HasValue||x.ProductBrandId==productSpecParams.BrandId)
             &&(!productSpecParams.TypeId.HasValue||x.ProductTypeId==productSpecParams.TypeId))
         {
             AddInclude(x => x.ProductType);
